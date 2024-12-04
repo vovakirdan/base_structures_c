@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define VECTOR_INIT_CAPACITY 4
 
@@ -110,14 +111,32 @@ type *vector_##type##_pop_back(Vector_##type *vector) { \
     return value; \
 } \
 \
+/* Function to check if the vector is empty */ \
+bool vector_##type##_is_empty(Vector_##type *vector) { \
+    return vector->size == 0; \
+} \
+\
 /* Function to get the size of the vector */ \
-size_t vector_size(Vector_##type *vector) { \
+size_t vector_##type##_size(Vector_##type *vector) { \
     return vector->size; \
 } \
 \
 /* Function to get the capacity of the vector */ \
-size_t vector_capacity(Vector_##type *vector) { \
+size_t vector_##type##_capacity(Vector_##type *vector) { \
     return vector->capacity; \
+} \
+/* Function to remove all elements from the vector */ \
+void vector_##type##_clear(Vector_##type *vector) { \
+    vector->size = 0; \
+    /* Optionally reset capacity */ \
+    vector->capacity = VECTOR_INIT_CAPACITY; \
+    type *temp = (type *)realloc(vector->data, sizeof(type) * vector->capacity); \
+    if (!temp) { \
+        perror("Failed to reallocate vector data"); \
+        vector_##type##_destroy(vector); \
+        exit(EXIT_FAILURE); \
+    } \
+    vector->data = temp; \
 } \
 \
 /* Function to print the vector and its elements */ \

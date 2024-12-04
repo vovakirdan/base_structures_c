@@ -35,7 +35,7 @@ bool vector_add() {
     vector_point_push_back(v, p4);
     point p = {9, 9};
     vector_point_push_back(v, p);
-    if (vector_size(v) != 5) {
+    if (vector_point_size(v) != 5) {
         return false;
     }
     vector_point_print(v, print_point);
@@ -49,7 +49,7 @@ bool vector_add() {
     point *popped_point = vector_point_pop_back(v);
     printf("Popped point: ");
     print_point(popped_point);
-    if (vector_size(v) != 2) {
+    if (vector_point_size(v) != 2 || popped_point->x != 9 || popped_point->y != 9) {
         return false;
     }
     vector_point_print(v, print_point);
