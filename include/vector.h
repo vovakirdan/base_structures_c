@@ -7,16 +7,16 @@
 
 #define VECTOR_INIT_CAPACITY 4
 
-/*Macro to define a vector for a specific data type*/
+/* Macro to define a vector for a specific data type */
 #define DEFINE_VECTOR(type) \
- \
+\
 typedef struct { \
     type *data; \
     size_t size; \
     size_t capacity; \
 } Vector_##type; \
- \
-/*Function to create a vector*/ \
+\
+/* Function to create a vector */ \
 Vector_##type *vector_##type##_create(size_t capacity) { \
     Vector_##type *vector = (Vector_##type *)malloc(sizeof(Vector_##type)); \
     if (!vector) { \
@@ -33,14 +33,15 @@ Vector_##type *vector_##type##_create(size_t capacity) { \
     } \
     return vector; \
 } \
- \
-/*Function to destroy the vector*/ \
+\
+/* Function to destroy the vector */ \
 void vector_##type##_destroy(Vector_##type *vector) { \
     if (vector) { \
         free(vector->data); \
         free(vector); \
     } \
 } \
+\
 /* Function to add an element to the end */ \
 void vector_##type##_push_back(Vector_##type *vector, type value) { \
     if (vector->size == vector->capacity) { \
@@ -55,16 +56,16 @@ void vector_##type##_push_back(Vector_##type *vector, type value) { \
     } \
     vector->data[vector->size++] = value; \
 } \
- \
+\
 /* Function to access an element by index */ \
-type vector_##type##_get(Vector_##type *vector, size_t index) { \
+type *vector_##type##_get(Vector_##type *vector, size_t index) { \
     if (index >= vector->size) { \
         fprintf(stderr, "Index out of bounds \n"); \
         exit(EXIT_FAILURE); \
     } \
-    return vector->data[index]; \
+    return &vector->data[index]; \
 } \
- \
+\
 /* Function to delete an element by index */ \
 void vector_##type##_delete(Vector_##type *vector, size_t index) { \
     if (index >= vector->size) { \
@@ -88,12 +89,12 @@ void vector_##type##_delete(Vector_##type *vector, size_t index) { \
 } \
 \
 /* Function to pop last element and return it */ \
-type vector_##type##_pop_back(Vector_##type *vector) { \
+type *vector_##type##_pop_back(Vector_##type *vector) { \
     if (vector->size == 0) { \
         fprintf(stderr, "Vector is empty \n"); \
         exit(EXIT_FAILURE); \
     } \
-    type value = vector->data[--vector->size]; \
+    /* Optionally shrink capacity */ \
     if (vector->size > 0 && vector->size == vector->capacity / 4) { \
         vector->capacity /= 2; \
         type *temp = (type *)realloc(vector->data, sizeof(type) * vector->capacity); \
@@ -104,25 +105,29 @@ type vector_##type##_pop_back(Vector_##type *vector) { \
         } \
         vector->data = temp; \
     } \
+    type *value = vector_##type##_get(vector, vector->size - 1); \
+    --vector->size; \
     return value; \
 } \
 \
+/* Function to get the size of the vector */ \
 size_t vector_size(Vector_##type *vector) { \
     return vector->size; \
 } \
 \
+/* Function to get the capacity of the vector */ \
 size_t vector_capacity(Vector_##type *vector) { \
     return vector->capacity; \
 } \
 \
 /* Function to print the vector and its elements */ \
-void vector_##type##_print(Vector_##type *vector, void (*print_func)(type)) { \
+void vector_##type##_print(Vector_##type *vector, void (*print_func)(type *)) { \
     printf("Vector{size=%zu, capacity=%zu}\n", vector->size, vector->capacity); \
     printf("Vector of %s elements:\n", #type); \
     for (size_t i = 0; i < vector->size; i++) { \
         printf("    [%zu] ", i); \
-        print_func(vector->data[i]); \
+        print_func(&vector->data[i]); \
     } \
-}  
+}
 
-#endif //* VECTOR_H */
+#endif /* VECTOR_H */

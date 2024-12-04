@@ -8,8 +8,8 @@ typedef struct point {
     int y;
 } point;
 
-void print_point(point p) {
-    printf("Point{x: %d, y: %d}\n", p.x, p.y);
+void print_point(point *p) {
+    printf("Point{x: %d, y: %d}\n", p->x, p->y);
 }
 
 DEFINE_VECTOR(point)
@@ -33,7 +33,7 @@ bool vector_add() {
     vector_point_push_back(v, p2);
     vector_point_push_back(v, p3);
     vector_point_push_back(v, p4);
-    point p = {5, 6};
+    point p = {9, 9};
     vector_point_push_back(v, p);
     if (vector_size(v) != 5) {
         return false;
@@ -46,7 +46,7 @@ bool vector_add() {
     vector_point_delete(v, 1);
     vector_point_delete(v, 2);
     printf("Pop back last point\n");
-    point popped_point = vector_point_pop_back(v);
+    point *popped_point = vector_point_pop_back(v);
     printf("Popped point: ");
     print_point(popped_point);
     if (vector_size(v) != 2) {
