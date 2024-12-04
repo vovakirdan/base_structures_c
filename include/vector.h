@@ -18,7 +18,7 @@ typedef struct { \
 } Vector_##type; \
 \
 /* Function to create a vector */ \
-Vector_##type *vector_##type##_create(size_t capacity) { \
+Vector_##type *vector_create_##type(size_t capacity) { \
     Vector_##type *vector = (Vector_##type *)malloc(sizeof(Vector_##type)); \
     if (!vector) { \
         perror("Failed to allocate vector"); \
@@ -36,7 +36,7 @@ Vector_##type *vector_##type##_create(size_t capacity) { \
 } \
 \
 /* Function to destroy the vector */ \
-void vector_##type##_destroy(Vector_##type *vector) { \
+void vector_destroy_##type(Vector_##type *vector) { \
     if (vector) { \
         free(vector->data); \
         free(vector); \
@@ -44,13 +44,13 @@ void vector_##type##_destroy(Vector_##type *vector) { \
 } \
 \
 /* Function to add an element to the end */ \
-void vector_##type##_push_back(Vector_##type *vector, type value) { \
+void vector_push_back_##type(Vector_##type *vector, type value) { \
     if (vector->size == vector->capacity) { \
         vector->capacity *= 2; \
         type *temp = (type *)realloc(vector->data, sizeof(type) * vector->capacity); \
         if (!temp) { \
             perror("Failed to reallocate vector data"); \
-            vector_##type##_destroy(vector); \
+            vector_destroy_##type(vector); \
             exit(EXIT_FAILURE); \
         } \
         vector->data = temp; \
@@ -59,7 +59,7 @@ void vector_##type##_push_back(Vector_##type *vector, type value) { \
 } \
 \
 /* Function to access an element by index */ \
-type *vector_##type##_get(Vector_##type *vector, size_t index) { \
+type *vector_get_##type(Vector_##type *vector, size_t index) { \
     if (index >= vector->size) { \
         fprintf(stderr, "Index out of bounds \n"); \
         exit(EXIT_FAILURE); \
@@ -68,7 +68,7 @@ type *vector_##type##_get(Vector_##type *vector, size_t index) { \
 } \
 \
 /* Function to delete an element by index */ \
-void vector_##type##_delete(Vector_##type *vector, size_t index) { \
+void vector_delete_##type(Vector_##type *vector, size_t index) { \
     if (index >= vector->size) { \
         fprintf(stderr, "Index out of bounds \n"); \
         exit(EXIT_FAILURE); \
@@ -82,7 +82,7 @@ void vector_##type##_delete(Vector_##type *vector, size_t index) { \
         type *temp = (type *)realloc(vector->data, sizeof(type) * vector->capacity); \
         if (!temp) { \
             perror("Failed to reallocate vector data"); \
-            vector_##type##_destroy(vector); \
+            vector_destroy_##type(vector); \
             exit(EXIT_FAILURE); \
         } \
         vector->data = temp; \
@@ -90,7 +90,7 @@ void vector_##type##_delete(Vector_##type *vector, size_t index) { \
 } \
 \
 /* Function to pop last element and return it */ \
-type *vector_##type##_pop_back(Vector_##type *vector) { \
+type *vector_pop_back_##type(Vector_##type *vector) { \
     if (vector->size == 0) { \
         fprintf(stderr, "Vector is empty \n"); \
         exit(EXIT_FAILURE); \
@@ -101,46 +101,46 @@ type *vector_##type##_pop_back(Vector_##type *vector) { \
         type *temp = (type *)realloc(vector->data, sizeof(type) * vector->capacity); \
         if (!temp) { \
             perror("Failed to reallocate vector data"); \
-            vector_##type##_destroy(vector); \
+            vector_destroy_##type(vector); \
             exit(EXIT_FAILURE); \
         } \
         vector->data = temp; \
     } \
-    type *value = vector_##type##_get(vector, vector->size - 1); \
+    type *value = vector_get_##type(vector, vector->size - 1); \
     --vector->size; \
     return value; \
 } \
 \
 /* Function to check if the vector is empty */ \
-bool vector_##type##_is_empty(Vector_##type *vector) { \
+bool vector_is_empty_##type(Vector_##type *vector) { \
     return vector->size == 0; \
 } \
 \
 /* Function to get the size of the vector */ \
-size_t vector_##type##_size(Vector_##type *vector) { \
+size_t vector_size_##type(Vector_##type *vector) { \
     return vector->size; \
 } \
 \
 /* Function to get the capacity of the vector */ \
-size_t vector_##type##_capacity(Vector_##type *vector) { \
+size_t vector_capacity_##type(Vector_##type *vector) { \
     return vector->capacity; \
 } \
 /* Function to remove all elements from the vector */ \
-void vector_##type##_clear(Vector_##type *vector) { \
+void vector_clear_##type(Vector_##type *vector) { \
     vector->size = 0; \
     /* Optionally reset capacity */ \
     vector->capacity = VECTOR_INIT_CAPACITY; \
     type *temp = (type *)realloc(vector->data, sizeof(type) * vector->capacity); \
     if (!temp) { \
         perror("Failed to reallocate vector data"); \
-        vector_##type##_destroy(vector); \
+        vector_destroy_##type(vector); \
         exit(EXIT_FAILURE); \
     } \
     vector->data = temp; \
 } \
 \
 /* Function to print the vector and its elements */ \
-void vector_##type##_print(Vector_##type *vector, void (*print_func)(type *)) { \
+void vector_print_##type(Vector_##type *vector, void (*print_func)(type *)) { \
     printf("Vector{size=%zu, capacity=%zu}\n", vector->size, vector->capacity); \
     printf("Vector of %s elements:\n", #type); \
     for (size_t i = 0; i < vector->size; i++) { \

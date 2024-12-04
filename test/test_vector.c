@@ -16,45 +16,45 @@ DEFINE_VECTOR(point)
 
 // test creating vector
 bool vector_create() {
-    Vector_point *v = vector_point_create(0);
-    vector_point_destroy(v);
+    Vector_point *v = vector_create_point(0);
+    vector_destroy_point(v);
     return true;
 }
 
 // test adding to vector
 bool vector_add() {
-    Vector_point *v = vector_point_create(0);
+    Vector_point *v = vector_create_point(0);
     printf("Before push back\n");
     point p1 = {1, 2};
     point p2 = {3, 4};
     point p3 = {5, 6};
     point p4 = {7, 8};
-    vector_point_push_back(v, p1);
-    vector_point_push_back(v, p2);
-    vector_point_push_back(v, p3);
-    vector_point_push_back(v, p4);
+    vector_push_back_point(v, p1);
+    vector_push_back_point(v, p2);
+    vector_push_back_point(v, p3);
+    vector_push_back_point(v, p4);
     point p = {9, 9};
-    vector_point_push_back(v, p);
-    if (vector_point_size(v) != 5) {
+    vector_push_back_point(v, p);
+    if (vector_size_point(v) != 5) {
         return false;
     }
-    vector_point_print(v, print_point);
+    vector_print_point(v, print_point);
     printf("After push back\n");
 
     // delete an element
     printf("Deleting element at index 1, 2\n");
-    vector_point_delete(v, 1);
-    vector_point_delete(v, 2);
+    vector_delete_point(v, 1);
+    vector_delete_point(v, 2);
     printf("Pop back last point\n");
-    point *popped_point = vector_point_pop_back(v);
+    point *popped_point = vector_pop_back_point(v);
     printf("Popped point: ");
     print_point(popped_point);
-    if (vector_point_size(v) != 2 || popped_point->x != 9 || popped_point->y != 9) {
+    if (vector_size_point(v) != 2 || popped_point->x != 9 || popped_point->y != 9) {
         return false;
     }
-    vector_point_print(v, print_point);
+    vector_print_point(v, print_point);
 
-    vector_point_destroy(v);
+    vector_destroy_point(v);
     return true;
 }
 
