@@ -16,14 +16,14 @@ DEFINE_VECTOR(point)
 
 // test creating vector
 bool vector_create() {
-    Vector_point *v = vector_create_point(0);
+    vector_point *v = vector_create_point(0);
     vector_destroy_point(v);
     return true;
 }
 
 // test adding to vector
 bool vector_add() {
-    Vector_point *v = vector_create_point(0);
+    vector_point *v = vector_create_point(0);
     printf("Before push back\n");
     point p1 = {1, 2};
     point p2 = {3, 4};
